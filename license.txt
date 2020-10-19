@@ -1,0 +1,8 @@
+Copyright (c) 2020 Meher K Prakash
+
+Cite as: C. K. Sruthi, M. K. Prakash, Disentangling the contribution of each descriptive characteristic of every single mutation to its functional effects (2020)
+
+
+Subject to Creative Commons License CC By-NC-ND-4.0. More documentation available at:
+
+https://creativecommons.org/licenses/by-nc-nd/4.0/
