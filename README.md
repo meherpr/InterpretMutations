@@ -1,2 +1,28 @@
 # InterpretMutations
 A formalism for understanding the contributions of different factors to the mutational effects predictions
+
+C. K. Sruthi, M. K. Prakash, Disentangling the contribution of each descriptive characteristic of every single mutation to its functional effects (2020).
+
+Older version of the manuscript is available at: https://www.biorxiv.org/content/10.1101/867812v1
+
+
+The input features, reported fitness, scaled fitness and predicted fitness are given for each protein in the files:
+blact.csv - Beta-lactamase 
+aph3.csv  - APH(3')-II 
+hsp90.csv - Hsp90
+mapk1.csv - MAPK1
+ube2i.csv - UBE2I
+tpk1.csv  - TPK1
+bgl3.csv  - Bgl3
+lgk.csv   - LGK
+
+The script to optimize hyper parameters is OptimizeparamsPred.py
+The command "python OptimizeparamsPred.py -h" will print the required inputs to run the script
+An example to run this script is:
+python OptimizeparamsPred.py -i aph3.csv -l 0.01 -f 14
+
+The script to perform the SHAP analysis is shapanalysis.py
+The command "python shapanalysis.py -h" will print the required inputs to run the script
+An example to run this script is:
+python shapanalysis.py -i aph3.csv -o aph3fit -f 14 -t 0.25 -l 0.01 -n 1253 -d 7 -w 15 -g 0 -s 0.8 -c 0.4 -a 0.01
+
