@@ -3,8 +3,7 @@ A formalism for understanding the contributions of different factors to the muta
 
 C. K. Sruthi, M. K. Prakash, Disentangling the contribution of each descriptive characteristic of every single mutation to its functional effects (2020).
 
-Older version of the manuscript is available at: https://www.biorxiv.org/content/10.1101/867812v1
-
+Older version of the manuscript is available at: https://www.biorxiv.org/content/10.1101/867812v2
 
 
 INPUTS.
