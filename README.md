@@ -17,25 +17,32 @@ tpk1.csv  - TPK1
 bgl3.csv  - Bgl3
 lgk.csv   - LGK
 
-HYPER PARAMETERS.
-The script to optimize hyper parameters is OptimizeparamsPred.py
-The command "python OptimizeparamsPred.py -h" will print the required inputs to run the script
+HYPERPARAMETERS.
+The script to optimize hyperparameters is OptimizeparamsPred.py.
+The command "python OptimizeparamsPred.py -h" will print the required inputs to run the script.
 An example to run this script is:
 python OptimizeparamsPred.py -i aph3.csv -l 0.01 -f 14
 
+The tuned parameters obtained by running OptimizeparamsPred.py can be fed to shapanalysis.py to develop XGBoost models with the optimized parameters and to perform the SHAP analysis.
+
+
 SHAP analysis.
-The script to perform the SHAP analysis is shapanalysis.py
-The command "python shapanalysis.py -h" will print the required inputs to run the script
+The script to perform the SHAP analysis is shapanalysis.py.
+The command "python shapanalysis.py -h" will print the required inputs to run the script.
 An example to run this script is:
 python shapanalysis.py -i aph3.csv -o aph3fit -f 14 -t 0.25 -l 0.01 -n 1253 -d 7 -w 15 -g 0 -s 0.8 -c 0.4 -a 0.01
 
 LEAVE ONE FEATURE OUT analysis.
-The leave-one-feature-out-analysis can be done by adding one more argument using
+
+Hyperparameter tuning as well as the SHAP analysis can be done removing a single feature at time using the scripts OptimizeparamsPred.py and shapanalysis.py with the minor modifications described below. 
+
+1. Add one more argument to pass the name of the feature to be removed by including this line
 
 parser.add_argument('-r','--remove', dest= "remove_col", help="The column to be removed when generating the model",type=str,required=True)
 
 after line number 22 in "OptimizedparamPred.py" and after line number 34 in shapanalysis.py
-and removing the feature specified by this argument by
+
+2. Remove the feature specified by this argument by
 
 X = X.drop(columns=[options.remove_col])
 
@@ -43,13 +50,13 @@ after line number 34 in "OptimizedparamPred.py" and after line number 46 in shap
 
 Then the scripts can be executed using commands like
 
-REPEATING HYPER PARAMETER optimisation.
+REPEATING HYPERPARAMETER optimisation.
 python OptimizeparamsPred.py -i blact.csv -l 0.01 -f 15 -r Conservation 
-This will tune hyper parameters removing the feature Conservation from inputs. The input to be provided following the argument -r is the feature name as it appears in the input file, here blact.csv
+This will tune hyperparameters removing the feature Conservation from inputs. The input to be provided following the argument -r is the feature name as it appears in the input file, here blact.csv.
 
 REPEATING SHAP analysis.
 Similarly the script shapanalysis.py can be executed with the extra argument added.
 For example:
-python shapanalysis.py -n 1138 -l 0.01 -d 25 -w 20 -g 0 -s 0.9 -c 0.9 -a 0 -f 21 -o fit_0.01_nocons -i input_fitness_blact_noNS_scaledfit.csv -t 0.25 -r Conservation
+python shapanalysis.py -n 1138 -l 0.01 -d 25 -w 20 -g 0 -s 0.9 -c 0.9 -a 0 -f 21 -o out -i blact.csv -t 0.25 -r Conservation
 
-
+Similar calculations can be done for all features by passing suitable arguments.
