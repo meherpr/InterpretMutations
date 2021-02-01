@@ -10,7 +10,6 @@ from sklearn import model_selection
 import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.model_selection import GridSearchCV
-from sklearn import metrics
 from sklearn.metrics import mean_squared_error
 import argparse
 from matplotlib import cm
@@ -18,6 +17,7 @@ from scipy.stats import pearsonr
 from sklearn.model_selection import KFold
 from sklearn.metrics import r2_score
 from sys import argv
+
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-n','--nest', dest="n_est_opt", help='n_estimators',type=int,required=True)
@@ -60,12 +60,12 @@ X_train, X_test, y_train, y_test = model_selection.train_test_split(X, Y, test_s
 xg_reg = xgb.XGBRegressor(objective ='reg:squarederror',learning_rate = options.lr, seed=27,n_estimators=options.n_est_opt,max_depth=options.maxdepth_opt,min_child_weight=options.min_child_weight_opt,gamma=options.gamma_opt,subsample=options.subsample_opt, colsample_bytree=options.colsample_bytree_opt,reg_alpha=options.reg_alpha_opt) 
 
 xg_reg.fit(X_train,y_train)
-print ("XGB Parameters",xg_reg.get_xgb_params())
+print ("\nXGB Parameters",xg_reg.get_xgb_params())
 y_pred = xg_reg.predict(X_test)
 y_train_pred = xg_reg.predict(X_train)
 y_all_pred = xg_reg.predict(X)
 rmse = np.sqrt(mean_squared_error(y_test, y_pred))
-print("Test RMSE: %f" % (rmse))
+print("\nTest RMSE: %f" % (rmse))
 rmse = np.sqrt(mean_squared_error(y_train, y_train_pred))
 print("Train RMSE: %f" % (rmse))
 print ("R2_train",r2_score(y_train, y_train_pred),"R2_test",r2_score(y_test, y_pred),"R2_all",r2_score(Y,y_all_pred))
@@ -93,13 +93,12 @@ np.savetxt(options.out+"_trainpredFIT.csv", (np.column_stack((y_train.to_numpy()
 np.savetxt(options.out+"_testpredFIT.csv", (np.column_stack((y_test.to_numpy(),y_pred.reshape((y_pred.shape[0],1))))), delimiter=",",header="observed_effect,predicted_effect")
 
 ### k-fold cross validation
-print ("k-fold cross validation analysis")
+print ("\n\nk-fold cross validation analysis")
 nsplits = int(1/test_size)
 print ("nsplits = ",nsplits)
 kf = KFold(n_splits=nsplits,random_state=123,shuffle=True)
-print (kf.get_n_splits(X))
 print(kf)
-shap_values_cv = np.zeros((shap_values.shape[0],shap_values.shape[1]))
+shap_values_cv = [] 
 rmsevals = []
 k = 1
 all_predictions = np.column_stack((Y.to_numpy(),y_all_pred.reshape((y_all_pred.shape[0],1))))
@@ -117,16 +116,25 @@ for train_index, test_index in kf.split(X):
 	print("Train RMSE: %f" % (rmsetrain))
 	explainer = shap.TreeExplainer(xg_reg)
 	shap_values_new = explainer.shap_values(X)
-	shap_values_cv += shap_values_new
+	shap_values_cv.append(shap_values_new)
 	np.savetxt(options.out+"_"+str(k)+"_SHAP.csv", shap_values_new,delimiter=",",header=header)
 	y_all_pred = xg_reg.predict(X)
 	all_predictions = np.column_stack((all_predictions,y_all_pred.reshape((y_all_pred.shape[0],1))))
 	rmsevals.append([rmsetrain,rmsetest])
 	k+=1
-shap_values_cv = shap_values_cv/nsplits
-np.savetxt(options.out+"_avg_SHAP.csv", shap_values_cv,delimiter=",",header=header)
-all_predictions = np.column_stack((all_predictions,np.mean(all_predictions[:,2:(2+nsplits)],axis=1)))
-np.savetxt(options.out+"_allpred_cv.csv", all_predictions,header="observed_effect predicted_effect CV1_pred CV2_pred CV3_pred CV4_pred CV_avg_pred")
+np.savetxt(options.out+"_allpred_cv.csv", all_predictions,header="observed_effect,predicted_effect,CV1_pred,CV2_pred,CV3_pred,CV4_pred",delimiter=",")
 rmsevals = np.array(rmsevals)
 print ("Mean train rmse=",np.mean(rmsevals[:,0]),"Std train rmse=",np.std(rmsevals[:,0]))
 print ("Mean test rmse=",np.mean(rmsevals[:,1]),"Std test rmse=",np.std(rmsevals[:,1]))
+
+###Robustness of SHAP values-Correlation between SHAP values from different CV models
+corr =[[] for k in range(no_columns)]
+for i in range(nsplits):
+	for j in range(i+1,nsplits):
+		for k in range(no_columns):
+			corr[k].append(pearsonr(shap_values_cv[i][:,k],shap_values_cv[j][:,k])[0])
+corr=np.array(corr)
+print ("\n\nRobustness of SHAP values-Correlation between SHAP values from different CV models\n")
+print ("Feature,Mean Correlation,Std. deviaion of Correlation")
+for k in range(no_columns):
+	print (X.columns[k]+","+str(np.mean(corr[k]))+","+str(np.std(corr[k])))
