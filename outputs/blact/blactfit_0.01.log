@@ -1,0 +1,84 @@
+Setting feature_perturbation = "tree_path_dependent" because no background data was given.
+Setting feature_perturbation = "tree_path_dependent" because no background data was given.
+Setting feature_perturbation = "tree_path_dependent" because no background data was given.
+Setting feature_perturbation = "tree_path_dependent" because no background data was given.
+Setting feature_perturbation = "tree_path_dependent" because no background data was given.
+
+ # python shapanalysis.py -i ../inputs/blact.csv -o ../outputs/blact/blactfit_0.01 -t 0.25 -f 15 -l 0.01 -n 1247 -d 9 -w 25 -g 0 -s 0.8 -c 0.8 -a 0 
+
+<IPython.core.display.HTML object>
+         Conservation  Avg_Corr  Avg_Commutetime  ...  HB_WT  HB_MUT  Catalytic_Dist
+Variant                                           ...                               
+R61A         0.499066  0.633563      1280.964570  ...   -4.5     1.8        1.928372
+R61C         0.499066  0.633563      1280.964570  ...   -4.5     2.5        1.928372
+R61D         0.499066  0.633563      1280.964570  ...   -4.5    -3.5        1.928372
+R61E         0.499066  0.633563      1280.964570  ...   -4.5    -3.5        1.928372
+R61F         0.499066  0.633563      1280.964570  ...   -4.5     2.8        1.928372
+...               ...       ...              ...  ...    ...     ...             ...
+K215R        0.317628  0.210425      1631.624983  ...   -3.9    -4.5        1.040845
+K215S        0.317628  0.210425      1631.624983  ...   -3.9    -0.8        1.040845
+K215T        0.317628  0.210425      1631.624983  ...   -3.9    -0.7        1.040845
+K215V        0.317628  0.210425      1631.624983  ...   -3.9     4.2        1.040845
+K215W        0.317628  0.210425      1631.624983  ...   -3.9    -0.9        1.040845
+
+[2467 rows x 12 columns]          Scaled_Fitness
+Variant                
+R61A           0.386005
+R61C           0.500048
+R61D          -0.012290
+R61E           0.062724
+R61F           0.132976
+...                 ...
+K215R          0.950389
+K215S          0.918517
+K215T          0.877964
+K215V          0.946126
+K215W          0.710356
+
+[2467 rows x 1 columns]
+Index(['Conservation', 'Avg_Corr', 'Avg_Commutetime', 'Contacts', 'BLOSUM',
+       'SASA', 'SS', 'PSSM_WT', 'PSSM_MUT', 'HB_WT', 'HB_MUT',
+       'Catalytic_Dist'],
+      dtype='object')
+
+XGB Parameters {'base_score': 0.5, 'booster': 'gbtree', 'colsample_bylevel': 1, 'colsample_bynode': 1, 'colsample_bytree': 0.8, 'gamma': 0.0, 'importance_type': 'gain', 'learning_rate': 0.01, 'max_delta_step': 0, 'max_depth': 9, 'min_child_weight': 25.0, 'missing': None, 'n_estimators': 1247, 'nthread': 1, 'objective': 'reg:squarederror', 'reg_alpha': 0.0, 'reg_lambda': 1, 'scale_pos_weight': 1, 'seed': 27, 'subsample': 0.8, 'verbosity': 1}
+
+Test RMSE: 0.147803
+Train RMSE: 0.098832
+R2_train 0.9241599578352121 R2_test 0.8252290992276472 R2_all 0.8999706593729371
+
+
+k-fold cross validation analysis
+nsplits =  4
+KFold(n_splits=4, random_state=123, shuffle=True)
+Fold  1
+Test RMSE: 0.147126
+Train RMSE: 0.099261
+Fold  2
+Test RMSE: 0.153865
+Train RMSE: 0.097739
+Fold  3
+Test RMSE: 0.160315
+Train RMSE: 0.096527
+Fold  4
+Test RMSE: 0.150974
+Train RMSE: 0.100192
+Mean train rmse= 0.09842993147015736 Std train rmse= 0.0014049827011788582
+Mean test rmse= 0.15306988042794709 Std test rmse= 0.00481771864160568
+
+
+Robustness of SHAP values-Correlation between SHAP values from different CV models
+
+Feature,Mean Correlation,Std. deviaion of Correlation
+Conservation,0.9844540454544157,0.003135422907133754
+Avg_Corr,0.972986369427954,0.0042311482777077445
+Avg_Commutetime,0.9516029715958599,0.007936370341375164
+Contacts,0.97131627233302,0.00905669243770643
+BLOSUM,0.9873718177713969,0.002922149272629577
+SASA,0.9944980229411967,0.0002443685958064141
+SS,0.9249658769529683,0.01838582898069386
+PSSM_WT,0.933009294804048,0.01783444348719964
+PSSM_MUT,0.9512928937358688,0.008773434169968631
+HB_WT,0.969132406411661,0.005647186543263215
+HB_MUT,0.9747508559419633,0.002683829088950317
+Catalytic_Dist,0.9787751533765792,0.0020779867522745087

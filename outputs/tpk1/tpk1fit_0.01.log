@@ -1,0 +1,82 @@
+Setting feature_perturbation = "tree_path_dependent" because no background data was given.
+Setting feature_perturbation = "tree_path_dependent" because no background data was given.
+Setting feature_perturbation = "tree_path_dependent" because no background data was given.
+Setting feature_perturbation = "tree_path_dependent" because no background data was given.
+Setting feature_perturbation = "tree_path_dependent" because no background data was given.
+
+ # python shapanalysis.py -i ../inputs/tpk1.csv -o ../outputs/tpk1/tpk1fit_0.01 -f 14 -t 0.25 -l 0.01 -n 276 -d 7 -w 7 -g 0 -s 0.7 -c 0.4 -a 0.001 
+
+<IPython.core.display.HTML object>
+         Conservation  Avg_Corr  Avg_Commutetime  ...  PSSM_MUT  HB_WT  HB_MUT
+Variant                                           ...                         
+E2A          0.283622  0.328997      3254.067849  ...         0   -3.5     1.8
+E2D          0.283622  0.328997      3254.067849  ...         0   -3.5    -3.5
+E2G          0.283622  0.328997      3254.067849  ...        -1   -3.5    -0.4
+E2K          0.283622  0.328997      3254.067849  ...         0   -3.5    -3.9
+E2M          0.283622  0.328997      3254.067849  ...         1   -3.5     1.9
+...               ...       ...              ...  ...       ...    ...     ...
+S243R        0.246338  0.223218      3376.810310  ...         0   -0.8    -4.5
+S243T        0.246338  0.223218      3376.810310  ...         0   -0.8    -0.7
+S243V        0.246338  0.223218      3376.810310  ...        -1   -0.8     4.2
+S243W        0.246338  0.223218      3376.810310  ...        -4   -0.8    -0.9
+S243Y        0.246338  0.223218      3376.810310  ...         1   -0.8    -1.3
+
+[3181 rows x 11 columns]          Scaled_Fitness
+Variant                
+E2A            0.880115
+E2D            0.321574
+E2G            0.263576
+E2K            0.161351
+E2M            0.148410
+...                 ...
+S243R          0.585101
+S243T          0.181657
+S243V          0.305990
+S243W          0.455886
+S243Y          0.765547
+
+[3181 rows x 1 columns]
+Index(['Conservation', 'Avg_Corr', 'Avg_Commutetime', 'Contacts', 'BLOSUM',
+       'SASA', 'SS', 'PSSM_WT', 'PSSM_MUT', 'HB_WT', 'HB_MUT'],
+      dtype='object')
+
+XGB Parameters {'base_score': 0.5, 'booster': 'gbtree', 'colsample_bylevel': 1, 'colsample_bynode': 1, 'colsample_bytree': 0.4, 'gamma': 0.0, 'importance_type': 'gain', 'learning_rate': 0.01, 'max_delta_step': 0, 'max_depth': 7, 'min_child_weight': 7.0, 'missing': None, 'n_estimators': 276, 'nthread': 1, 'objective': 'reg:squarederror', 'reg_alpha': 0.001, 'reg_lambda': 1, 'scale_pos_weight': 1, 'seed': 27, 'subsample': 0.7, 'verbosity': 1}
+
+Test RMSE: 0.271097
+Train RMSE: 0.226598
+R2_train 0.3441226506039917 R2_test 0.11747148471003133 R2_all 0.28475307197194344
+
+
+k-fold cross validation analysis
+nsplits =  4
+KFold(n_splits=4, random_state=123, shuffle=True)
+Fold  1
+Test RMSE: 0.271432
+Train RMSE: 0.226839
+Fold  2
+Test RMSE: 0.267950
+Train RMSE: 0.228487
+Fold  3
+Test RMSE: 0.268945
+Train RMSE: 0.227094
+Fold  4
+Test RMSE: 0.250387
+Train RMSE: 0.233676
+Mean train rmse= 0.22902369139803935 Std train rmse= 0.0027581302427180255
+Mean test rmse= 0.26467842671548825 Std test rmse= 0.008347807894150131
+
+
+Robustness of SHAP values-Correlation between SHAP values from different CV models
+
+Feature,Mean Correlation,Std. deviaion of Correlation
+Conservation,0.8731747257386009,0.01234733874735468
+Avg_Corr,0.8256458525077363,0.01485471627306831
+Avg_Commutetime,0.7688996506118384,0.02917946660761379
+Contacts,0.8292091315807885,0.03376756106538596
+BLOSUM,0.9611538668856824,0.005799940650635253
+SASA,0.814519203429668,0.045406864637434305
+SS,0.49667083350395136,0.16496292383709077
+PSSM_WT,0.7372113323150055,0.08424556364811642
+PSSM_MUT,0.905808964726869,0.01647253133798478
+HB_WT,0.6943090217014914,0.07538659377811548
+HB_MUT,0.9111786025795263,0.01392877764910545
