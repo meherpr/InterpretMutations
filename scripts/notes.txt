@@ -1,0 +1,2 @@
+While using the script "shapanalysis.py" for beta-lactamase data, to use the feature "Catalytic_Dist" as input, replace line number 45 with:
+X = pd.read_csv(options.infile, header='infer',delimiter=",",usecols=([i for i in range (13)]),index_col=0)
